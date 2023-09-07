@@ -6,15 +6,13 @@ public class TradeProcessor
     private static readonly float _lotSize = 100000f;
     public void ProcessTrades(Stream stream)
     {
-        var lines = new List<string>();
-        using (var reader = new StreamReader(stream))
-        {
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                lines.Add(line);
-            }
-        }
+        List<string> lines = ReadTradeData(stream);
+        List<Trade> trades = ParseTrades(lines);
+        StoreTrades(trades);
+    }
+
+    private static List<Trade> ParseTrades(List<string> lines)
+    {
         var trades = new List<Trade>();
         var lineCount = 1;
         foreach (var line in lines)
@@ -22,14 +20,12 @@ public class TradeProcessor
             var fields = line.Split(new char[] { ',' });
             if (fields.Length != 3)
             {
-                Console.WriteLine("WARN: Line {0} malformed. Only {1} field(s) found.",
-                lineCount, fields.Length);
+                Console.WriteLine("WARN: Line {0} malformed. Only {1} field(s) found.", lineCount, fields.Length);
                 continue;
             }
             if (fields[0].Length != 6)
             {
-                Console.WriteLine("WARN: Trade currencies on line {0} malformed: '{1}'",
-                lineCount, fields[0]);
+                Console.WriteLine("WARN: Trade currencies on line {0} malformed: '{1}'", lineCount, fields[0]);
                 continue;
             }
             int tradeAmount;
@@ -54,6 +50,27 @@ public class TradeProcessor
             trades.Add(trade);
             lineCount++;
         }
+
+        return trades;
+    }
+
+    private static List<string> ReadTradeData(Stream stream)
+    {
+        var lines = new List<string>();
+        using (var reader = new StreamReader(stream))
+        {
+            string line;
+            while ((line = reader.ReadLine()) is not null)
+            {
+                lines.Add(line);
+            }
+        }
+
+        return lines;
+    }
+
+    private void StoreTrades(List<Trade> trades)
+    {
         using var connection = new SqlConnection("Data Source =.; Initial Catalog = TradingOperation; Integrated Security = True");
         connection.Open();
         using var transaction = connection.BeginTransaction();
