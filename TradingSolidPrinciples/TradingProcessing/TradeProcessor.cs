@@ -1,5 +1,5 @@
 ﻿using TradingSolidPrinciples.Interfaces;
-namespace TradingSolidPrinciples;
+namespace TradingSolidPrinciples.TradingProcessing;
 public class TradeProcessor
 {
     private readonly ITradeDataProvider _tradeDataProvider;
@@ -12,7 +12,7 @@ public class TradeProcessor
         _tradeParser = tradeParser ?? throw new ArgumentNullException(nameof(tradeParser));
         _tradeStorage = tradeStorage ?? throw new ArgumentNullException(nameof(tradeStorage));
     }
-    public void ProcessTrades()
+    public virtual void ProcessTrades()
     {
         var lines = _tradeDataProvider.GetTradeData();
         var trades = _tradeParser.Parse(lines);
