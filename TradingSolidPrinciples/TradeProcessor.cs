@@ -80,25 +80,17 @@ public class TradeProcessor
             return false;
         }
 
-        int tradeAmount;
-        if (!int.TryParse(fields[1], out tradeAmount))
+        if (!int.TryParse(fields[1], out var _))
         {
             LogMessage("WARN: Trade amount on line {0} not a valid integer: '{1}'", currentLine, fields[1]);
             return false;
         }
-        decimal tradePrice;
-        if (!decimal.TryParse(fields[2], out tradePrice))
+        if (!decimal.TryParse(fields[2], out var _))
         {
-            LogMessage("WARN: Trade price on line {0} not a valid decimal: '{1}'",
-            currentLine, fields[2]);
+            LogMessage("WARN: Trade price on line {0} not a valid decimal: '{1}'", currentLine, fields[2]);
             return false;
         }
         return true;
-    }
-
-    private void LogMessage(string message, params object[] args)
-    {
-        Console.WriteLine(message, args);
     }
 
     private Trade MapTradeDataToTradeRecord(string[] fields)
@@ -115,5 +107,10 @@ public class TradeProcessor
             Price = tradePrice
         };
         return tradeRecord;
+    }
+
+    private void LogMessage(string message, params object[] args)
+    {
+        Console.WriteLine(message, args);
     }
 }
