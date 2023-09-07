@@ -1,7 +1,4 @@
-﻿using System.Data.SqlClient;
-using TradingSolidPrinciples.Entities;
-using TradingSolidPrinciples.Interfaces;
-
+﻿using TradingSolidPrinciples.Interfaces;
 namespace TradingSolidPrinciples;
 public class TradeProcessor
 {

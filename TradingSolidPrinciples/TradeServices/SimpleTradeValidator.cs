@@ -26,7 +26,7 @@ public class SimpleTradeValidator : ITradeValidator
         }
         if (!decimal.TryParse(tradeData[2], out var _))
         {
-            _logger.LogWarning("Trade price not a valid decimal: '{1}'",tradeData[2]);
+            _logger.LogWarning("Trade price not a valid decimal: '{1}'", tradeData[2]);
             return false;
         }
         return true;
