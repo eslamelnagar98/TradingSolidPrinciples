@@ -1,15 +1,20 @@
 ﻿using TradingSolidPrinciples.Entities;
 namespace TradingSolidPrinciples.Interfaces.Infrastructure;
-public class CrudLogging : ICreateReadUpdate<Entity>, IDelete<Entity>
+public class CrudLogging : ICreateRead<Entity>, IDelete<Entity>, IUpdate<Entity>
 {
-    private readonly ICreateReadUpdate<Entity> _createReadUpdateDelete;
+    private readonly ICreateRead<Entity> _createReadUpdateDelete;
     private readonly ILogger _logger;
     private readonly IDelete<Entity> _deleteDecorator;
-    public CrudLogging(ICreateReadUpdate<Entity> createReadUpdateDelete, ILogger logger, IDelete<Entity> deleteDecorator)
+    private readonly IUpdate<Entity> _updateDecorator;
+    public CrudLogging(ICreateRead<Entity> createReadUpdateDelete,
+                       ILogger logger,
+                       IDelete<Entity> deleteDecorator,
+                       IUpdate<Entity> updateDecorator)
     {
         _createReadUpdateDelete = createReadUpdateDelete;
         _logger = logger;
         _deleteDecorator = deleteDecorator;
+        _updateDecorator = updateDecorator;
     }
     public void Create(Entity entity)
     {
@@ -38,6 +43,6 @@ public class CrudLogging : ICreateReadUpdate<Entity>, IDelete<Entity>
     public void Update(Entity entity)
     {
         _logger.LogInformation("Updating entity of type {0}", typeof(Entity).Name);
-        _createReadUpdateDelete.Update(entity);
+        _updateDecorator.Update(entity);
     }
 }

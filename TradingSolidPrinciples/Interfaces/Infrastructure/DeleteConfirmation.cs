@@ -7,8 +7,6 @@ public class DeleteConfirmation : IDelete<Entity>
     {
         _deleteDecorator = deleteDecorator;
     }
-
-
     public void Delete(Entity entity)
     {
         Console.WriteLine("Are you sure you want to delete the entity? [y/N]");
