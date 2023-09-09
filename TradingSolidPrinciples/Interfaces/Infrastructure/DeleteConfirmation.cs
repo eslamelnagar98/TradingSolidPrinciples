@@ -1,30 +1,13 @@
 ﻿using TradingSolidPrinciples.Entities;
 namespace TradingSolidPrinciples.Interfaces.Infrastructure;
-public class DeleteConfirmation : ICreateReadUpdateDelete<Entity>
+public class DeleteConfirmation : IDelete<Entity>
 {
-    private readonly ICreateReadUpdateDelete<Entity> _createReadUpdateDelete;
-    public DeleteConfirmation(ICreateReadUpdateDelete<Entity> createReadUpdateDelete)
+    private readonly IDelete<Entity> _deleteDecorator;
+    public DeleteConfirmation(IDelete<Entity> deleteDecorator)
     {
-        _createReadUpdateDelete = createReadUpdateDelete;
-    }
-    public void Create(Entity entity)
-    {
-        _createReadUpdateDelete.Create(entity);
-    }
-    public IEnumerable<Entity> GetALl()
-    {
-        return _createReadUpdateDelete.GetALl();
+        _deleteDecorator = deleteDecorator;
     }
 
-    public Entity GetById(Guid identity)
-    {
-        return _createReadUpdateDelete.GetById(identity);
-    }
-
-    public void Update(Entity entity)
-    {
-        _createReadUpdateDelete.Update(entity);
-    }
 
     public void Delete(Entity entity)
     {
@@ -32,7 +15,7 @@ public class DeleteConfirmation : ICreateReadUpdateDelete<Entity>
         var keyInfo = Console.ReadKey();
         if (keyInfo.Key == ConsoleKey.Y)
         {
-            _createReadUpdateDelete.Delete(entity);
+            _deleteDecorator.Delete(entity);
         }
     }
 

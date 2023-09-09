@@ -5,5 +5,4 @@ public interface ICreateReadUpdateDelete<TEntity> where TEntity : class
     TEntity GetById(Guid identity);
     IEnumerable<TEntity> GetALl();
     void Update(TEntity entity);
-    void Delete(TEntity entity);
 }
