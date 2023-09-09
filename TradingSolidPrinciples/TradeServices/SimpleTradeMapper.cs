@@ -4,7 +4,6 @@ using TradingSolidPrinciples.Interfaces;
 namespace TradingSolidPrinciples.TradeServices;
 public class SimpleTradeMapper : ITradeMapper
 {
-    private static readonly float _lotSize = 100000f;
     public Trade Map(string[] fields)
     {
         var sourceCurrencyCode = fields[0].Substring(0, 3);
@@ -15,7 +14,6 @@ public class SimpleTradeMapper : ITradeMapper
         {
             SourceCurrency = sourceCurrencyCode,
             DestinationCurrency = destinationCurrencyCode,
-            Lots = tradeAmount / _lotSize,
             Price = tradePrice
         };
         return tradeRecord;

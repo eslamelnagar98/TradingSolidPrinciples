@@ -2,6 +2,6 @@
 namespace TradingSolidPrinciples.Contravariance;
 public class EntityEqualityComparer : IEqualityComparer<Entity>
 {
-    public bool Equals(Entity left, Entity right) => left.ID == right.ID;
+    public bool Equals(Entity left, Entity right) => left.Id == right.Id;
 
 }
