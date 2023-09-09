@@ -2,32 +2,29 @@
 namespace TradingSolidPrinciples.TradeServices;
 public class FileLogger : ILogger
 {
-    private static readonly string _filePath = @$"G:\Technical Data\{DateTime.Now:yyyyMMddHHmmss}.Log";
-    static FileLogger()
+    private readonly string _filePath = $@"G:\Technical Data\AllData.Log";
+    public FileLogger()
+    {
+        CheckIfFileExits();
+    }
+    public void LogInformation(string message, params object[] helperData)
+    {
+        LogMessage("INFO", message, helperData);
+    }
+    public void LogWarning(string message, params object[] helperData)
+    {
+        LogMessage("WARN", message, helperData);
+    }
+    private void LogMessage(string notificationType, string message, params object[] args)
+    {
+        var content = $"{notificationType}| {DateTime.Now:yyyyMMddHHmmss}:Message:{message}, With Data: {string.Join(',', args)}.";
+        File.AppendAllText(_filePath, $"{content}{Environment.NewLine}");
+    }
+    private void CheckIfFileExits()
     {
         if (!File.Exists(_filePath))
         {
-            File.Create(_filePath);
+            File.Create(_filePath, 1000, FileOptions.RandomAccess);
         }
-    }
-    public async Task LogException(string message, Exception exception)
-    {
-        var cotent = $"Error| {DateTime.Now:yyyyMMddHHmmssffff}:Message: {message}, " +
-                     $"With Exception:{exception.Message}, StackTrace:{exception.StackTrace}";
-        await File.AppendAllTextAsync(_filePath, cotent);
-    }
-
-    public async Task LogInformation(string message, params object[] heloperData)
-    {
-        var cotent = $"INFO| {DateTime.Now:yyyyMMddHHmmssffff}:Message: {message}, " +
-                     $"With Data : {string.Join(',', heloperData)}";
-        await File.AppendAllTextAsync(_filePath, cotent);
-    }
-
-    public async Task LogWarning(string message, params object[] heloperData)
-    {
-        var cotent = $"Warn| {DateTime.Now:yyyyMMddHHmmssffff}:Message: {message}, " +
-                    $"With Data : {string.Join(',', heloperData)}";
-        await File.AppendAllTextAsync(_filePath, cotent);
     }
 }

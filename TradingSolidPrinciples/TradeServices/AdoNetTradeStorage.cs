@@ -22,7 +22,6 @@ public class AdoNetTradeStorage : ITradeStorage
             command.CommandText = "dbo.insert_trade";
             command.Parameters.AddWithValue("@sourceCurrency", trade.SourceCurrency);
             command.Parameters.AddWithValue("@destinationCurrency", trade.DestinationCurrency);
-            command.Parameters.AddWithValue("@lots", trade.Lots);
             command.Parameters.AddWithValue("@price", trade.Price);
             command.ExecuteNonQuery();
         }

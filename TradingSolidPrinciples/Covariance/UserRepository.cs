@@ -5,6 +5,6 @@ public class UserRepository : IEntityRepository<User>
 {
     public User GetByID(Guid id)
     {
-        return new User();
+        return new User(20);
     }
 }
