@@ -9,7 +9,9 @@ public class TradeProcessor : ITradeProcessor
     private readonly ITradeParser _tradeParser;
     public TradeProcessor(ITradeDataProvider tradeDataProvider, ITradeStorage tradeStorage, ITradeParser tradeParser)
     {
-        
+        _tradeDataProvider = tradeDataProvider;
+        _tradeStorage = tradeStorage;
+        _tradeParser = tradeParser;
     }
     public void ProcessTrades()
     {

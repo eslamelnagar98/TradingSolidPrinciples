@@ -2,7 +2,7 @@
 namespace TradingSolidPrinciples.TradeServices;
 public class FileLogger : ILogger
 {
-    private readonly string _filePath = $@"G:\Technical Data\AllData.Log";
+    private readonly string _filePath = $@"G:\Technical Data\AllData_20230909173104.Log";
     public FileLogger()
     {
         CheckIfFileExits();
