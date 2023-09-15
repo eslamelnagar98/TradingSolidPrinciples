@@ -9,11 +9,13 @@ public class StreamTradeDataProvider : ITradeDataProvider
     }
     public IEnumerable<string> GetTradeData()
     {
-        using var reader = new StreamReader(_stream);
-        var line = default(string);
-        while ((line = reader.ReadLine()) is not null)
+        using (var reader = new StreamReader(_stream))
         {
-            yield return line;
+            var line = default(string);
+            while ((line = reader.ReadLine()) is not null)
+            {
+                yield return line;
+            }
         }
     }
 }

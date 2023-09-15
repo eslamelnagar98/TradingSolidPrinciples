@@ -6,14 +6,12 @@ using TradingSolidPrinciples.Interfaces.Infrastrucure.Interfaces;
 using TradingSolidPrinciples.Interfaces.Infrastrucure.Services.Query;
 using TradingSolidPrinciples.TradeServices;
 using TradingSolidPrinciples.TradingProcessing;
+using TradingSolidPrinciples.TradingProcessing.Interfaces;
 
 var serviceCollection = RegisterCommonServices();
 var logger = serviceCollection.Resolve<ILogger>();
 logger.LogInformation("Hello ITI", 2023);
-var tradeDataProvider = serviceCollection.Resolve<ITradeDataProvider>();
-var tradeParser = serviceCollection.Resolve<ITradeParser>();
-var tradeStorage = serviceCollection.Resolve<ITradeStorage>();
-var tradeProccessor = new TradeProcessor(tradeDataProvider, tradeStorage, tradeParser);
+var tradeProccessor = serviceCollection.Resolve<ITradeProcessor>();
 tradeProccessor.ProcessTrades();
 
 static IRead<User> RetrieveReadObject()
@@ -30,11 +28,23 @@ static IRead<User> RetrieveReadObject()
 }
 static IServiceCollection RegisterCommonServices()
 {
-    return new ServiceCollection()
-    .Register<ITradeDataProvider, BufferTradeDataProvider>()
-    .Register<ITradeParser, SimpleTradeParser>()
-    .Register<ITradeStorage, AdoNetTradeStorage>()
-    .Register<ITradeValidator, SimpleTradeValidator>()
+    var stream = File.OpenRead($@"G:\Technical Data\AllData.Log");
+    var serviceCollection = new ServiceCollection();
+    serviceCollection.Register<ITradeDataProvider, StreamTradeDataProvider>(
+        () => new StreamTradeDataProvider(stream))
+    .Register<ILogger, ConsoleLogger>()
+    .Register<ITradeValidator, SimpleTradeValidator>(
+        () => new SimpleTradeValidator(serviceCollection.Resolve<ILogger>()))
     .Register<ITradeMapper, SimpleTradeMapper>()
-    .Register<ILogger, FileLogger>();
+    .Register<ITradeParser, SimpleTradeParser>
+        (() => new SimpleTradeParser(serviceCollection.Resolve<ITradeValidator>(), serviceCollection.Resolve<ITradeMapper>()))
+    .Register<ITradeStorage, AdoNetTradeStorage>(() => new AdoNetTradeStorage(serviceCollection.Resolve<ILogger>()))
+    .Register<ITradeProcessor, TradeProcessor>
+        (() => new TradeProcessor(
+            serviceCollection.Resolve<ITradeDataProvider>(),
+            serviceCollection.Resolve<ITradeStorage>(),
+            serviceCollection.Resolve<ITradeParser>())
+        );
+
+    return serviceCollection;
 }
