@@ -7,13 +7,36 @@ using TradingSolidPrinciples.Interfaces.Infrastrucure.Services.Query;
 using TradingSolidPrinciples.TradeServices;
 using TradingSolidPrinciples.TradingProcessing;
 using TradingSolidPrinciples.TradingProcessing.Interfaces;
-
-var serviceCollection = RegisterCommonServices();
-var logger = serviceCollection.Resolve<ILogger>();
-logger.LogInformation("Hello ITI", 2023);
-var tradeProccessor = serviceCollection.Resolve<ITradeProcessor>();
-tradeProccessor.ProcessTrades();
-
+#region Using IService Collection (Register,Resolve) 
+//var serviceCollection = RegisterCommonServices();
+//var logger = serviceCollection.Resolve<ILogger>();
+//logger.LogInformation("Hello ITI", 2023);
+//var tradeProccessor = serviceCollection.Resolve<ITradeProcessor>();
+//tradeProccessor.ProcessTrades(); 
+#endregion
+#region Using Yield
+//var count = 0;
+//var numbers = ProduceEvenNumbers(5);
+//Console.WriteLine("Caller: about to iterate.");
+//foreach (int i in numbers)
+//{
+//    Console.WriteLine($"Caller: {i}");
+//}
+//Console.WriteLine(count);
+//IEnumerable<int> ProduceEvenNumbers(int upto)
+//{
+//    Console.WriteLine("Iterator: start.");
+//    for (int i = 0; i <= upto; i += 2)
+//    {
+//        Console.WriteLine($"Iterator: about to yield {i}");
+//        yield return i;
+//        count++;
+//        Console.WriteLine($"Iterator: yielded {i}");
+//    }
+//    Console.WriteLine("Iterator: end.");
+//} 
+#endregion
+List<int>
 static IRead<User> RetrieveReadObject()
 {
     Console.WriteLine("Please Enter Entity Type");
